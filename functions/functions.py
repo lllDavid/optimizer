@@ -5,19 +5,17 @@ from benchmarks.time import time_function
 # 1
 @time_function(repetitions=10)
 @profile_function
-def inefficient_duplicates_check(arr):
+def inefficient_duplicates_check(data):
     """
-    Check if a list has duplicates by using a list to track already-seen elements.
-    This is inefficient because checking membership in a list takes O(n) time.
+    This function is inefficient because it checks for duplicates by comparing
+    every element to every other element using nested loops.
     """
-    seen = []  
-    
-    for num in arr:
-        if num in seen:  
-            return True
-        seen.append(num)  
-    
-    return False
+    duplicates = []
+    for i in range(len(data)):
+        for j in range(i + 1, len(data)):
+            if data[i] == data[j] and data[i] not in duplicates:
+                duplicates.append(data[i])
+    return duplicates
 
 
 # 2

@@ -4,7 +4,7 @@ from os import path, makedirs
 
 def profile_function(func):
     def wrapper(*args, **kwargs):
-        directory = 'benchmarks/results'
+        directory = 'benchmarks/results/before'
 
         if not path.exists(directory):
             makedirs(directory)
