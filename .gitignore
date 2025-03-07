@@ -26,4 +26,4 @@ ENV/
 .venv/
 
 # CProfile
-stats.prof
+*.prof

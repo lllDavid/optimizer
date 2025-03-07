@@ -1,22 +1,27 @@
 import cProfile
 import pstats
+from os import path
 
-from functions.functions import find_large_primes
+def profile_function(func):
+    def wrapper(*args, **kwargs):
+        directory = 'benchmarks/results'
 
-def run_profiling():
-    profiler = cProfile.Profile()
-    profiler.enable()
+        profiler = cProfile.Profile()
+        profiler.enable()
 
-    find_large_primes(1000)
+        result = func(*args, **kwargs)
 
-    profiler.disable()
+        profiler.disable()
 
-    stats = pstats.Stats(profiler)
-    pstats.Stats.dump_stats(stats, "stats.prof")
-    print("Finished profiling, saved file.")
-    
-'''
-loaded_stats = pstats.Stats("stats.prof")
-loaded_stats.sort_stats('cumulative')  
-loaded_stats.print_stats()
-'''
+        filename = path.join(directory, f"{func.__name__}_stats.prof")
+        
+        stats = pstats.Stats(profiler)
+        stats.dump_stats(filename)
+
+        print(f"Finished profiling, saved file as '{filename}'.")
+        return result
+    return wrapper
+
+
+
+

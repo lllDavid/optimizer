@@ -1,42 +1,63 @@
-##
-from numpy import sort, random
+# Functions to optimize
+from benchmarks.cprofile import profile_function
+from benchmarks.time import time_function
 
 # 1
-def is_prime(n):
-    if n <= 1:
-        return False
-    for i in range(2, int(n ** 0.5) + 1):
-        if n % i == 0:
-            return False
-    return True
+@time_function(repetitions=10)
+@profile_function
+def inefficient_duplicates_check(arr):
+    """
+    Check if a list has duplicates by using a list to track already-seen elements.
+    This is inefficient because checking membership in a list takes O(n) time.
+    """
+    seen = []  
+    
+    for num in arr:
+        if num in seen:  
+            return True
+        seen.append(num)  
+    
+    return False
 
-def find_large_primes(limit):
-    primes = []
-    for num in range(2, limit + 1):
-        if is_prime(num):
-            primes.append(num)
-    return primes
 
 # 2
-def large_matrix_multiply(A, B):
-    N = len(A)
-    result = [[0] * N for _ in range(N)]
+@time_function(repetitions=10)
+@profile_function
+def inefficient_matrix_multiplication(A, B):
+    """
+    Perform matrix multiplication using nested loops (inefficient).
+    This method is inefficient because it uses three nested loops, resulting in a time complexity of O(n^3).
+    """
+    n = len(A)  
+    C = [[0] * n for _ in range(n)]  
 
-    for i in range(N):
-        for j in range(N):
-            for k in range(N):
-                result[i][j] += A[i][k] * B[k][j]
+    for i in range(n):
+        for j in range(n):
+            for k in range(n):
+                C[i][j] += A[i][k] * B[k][j]
     
-    return result
+    return C
 
 # 3
-from itertools import permutations
-data = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']
-result = list(permutations(data))  
+@time_function(repetitions=10)
+@profile_function
+def inefficient_sorting_repeatedly(n):
+    """
+    Generate a list of `n` random numbers and sort it repeatedly.
+    This function uses bubble sort for sorting, which is inefficient.
+    """
+    import random
 
-# 4
-large_data = random.randint(0, 1000000, 10000000)
-sorted_data = sort(large_data)  
+    def bubble_sort(arr):
+        for i in range(len(arr)):
+            for j in range(0, len(arr) - i - 1):
+                if arr[j] > arr[j + 1]:
+                    arr[j], arr[j + 1] = arr[j + 1], arr[j]
 
-
+    numbers = [random.randint(1, 1000) for _ in range(n)]
+    
+    for _ in range(100):  
+        bubble_sort(numbers)
+    
+    return numbers
 
