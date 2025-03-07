@@ -25,7 +25,7 @@ def inefficient_duplicates_check(arr):
 @profile_function
 def inefficient_matrix_multiplication(A, B):
     """
-    Perform matrix multiplication using nested loops (inefficient).
+    Perform matrix multiplication using nested loops.
     This method is inefficient because it uses three nested loops, resulting in a time complexity of O(n^3).
     """
     n = len(A)  

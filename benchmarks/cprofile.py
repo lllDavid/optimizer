@@ -1,10 +1,13 @@
 import cProfile
 import pstats
-from os import path
+from os import path, makedirs
 
 def profile_function(func):
     def wrapper(*args, **kwargs):
         directory = 'benchmarks/results'
+
+        if not path.exists(directory):
+            makedirs(directory)
 
         profiler = cProfile.Profile()
         profiler.enable()
