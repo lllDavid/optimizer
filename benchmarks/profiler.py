@@ -1,38 +1,30 @@
 from line_profiler import LineProfiler
 from os import path, makedirs
 
-def profile_function(func, profile_type='before'):
-    def wrapper(*args, **kwargs):
-        base_directory = 'benchmarks/results'
-        
-        if not path.exists(base_directory):
-            makedirs(base_directory)
-        
-        before_directory = path.join(base_directory, 'before')
-        optimized_directory = path.join(base_directory, 'optimized')
+def profile_function(profile_type="before"):
+    def decorator(func):
+        def wrapper(*args, **kwargs):
+            base_directory = 'benchmarks/results'
+            if not path.exists(base_directory):
+                makedirs(base_directory)
 
-        if not path.exists(before_directory):
-            makedirs(before_directory)
-        
-        if not path.exists(optimized_directory):
-            makedirs(optimized_directory)
+            directory = path.join(base_directory, profile_type)
+            if not path.exists(directory):
+                makedirs(directory)
 
-        directory = path.join(base_directory, profile_type)
+            profiler = LineProfiler()
+            profiler.add_function(func)
 
-        if not path.exists(directory):
-            makedirs(directory)
+            result = profiler(func)(*args, **kwargs)
 
-        profiler = LineProfiler()
-        profiler.add_function(func)
+            filename = path.join(directory, f"{func.__name__}.lprof")
+            with open(filename, 'w') as f:
+                profiler.print_stats(stream=f)
 
-        result = profiler(func)(*args, **kwargs)
+            print(f"Finished profiling, saved file as '{filename}'.")
 
-        filename = path.join(directory, f"{func.__name__}.lprof")
+            return result
 
-        with open(filename, 'w') as f:
-            profiler.print_stats(stream=f)
+        return wrapper
+    return decorator
 
-        print(f"Finished profiling, saved file as '{filename}'.")
-
-        return result
-    return wrapper

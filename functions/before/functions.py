@@ -4,7 +4,7 @@ from benchmarks.time import time_function
 
 # 1
 @time_function(repetitions=10)
-@profile_function
+@profile_function(profile_type="before")
 def inefficient_duplicates_check(data):
     """
     This function is inefficient because it checks for duplicates by comparing
@@ -17,10 +17,9 @@ def inefficient_duplicates_check(data):
                 duplicates.append(data[i])
     return duplicates
 
-
 # 2
 @time_function(repetitions=10)
-@profile_function
+@profile_function(profile_type="before")
 def inefficient_matrix_multiplication(A, B):
     """
     Perform matrix multiplication using nested loops.
@@ -38,7 +37,7 @@ def inefficient_matrix_multiplication(A, B):
 
 # 3
 @time_function(repetitions=10)
-@profile_function
+@profile_function(profile_type="before")
 def inefficient_sorting_repeatedly(n):
     """
     Generate a list of `n` random numbers and sort it repeatedly.

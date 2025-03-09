@@ -65,11 +65,13 @@ def compare(file_name):
     total_before_time = 0
     total_optimized_time = 0
 
-    for line_num in before_stats:
-        if line_num in optimized_stats:
-            before_data = before_stats[line_num]
-            optimized_data = optimized_stats[line_num]
+    all_line_nums = set(before_stats.keys()).union(optimized_stats.keys())
 
+    for line_num in all_line_nums:
+        before_data = before_stats.get(line_num)
+        optimized_data = optimized_stats.get(line_num)
+
+        if before_data and optimized_data:
             before_hits = before_data['hits']
             optimized_hits = optimized_data['hits']
             before_time = before_data['time']
@@ -87,11 +89,15 @@ def compare(file_name):
             total_before_time += before_time
             total_optimized_time += optimized_time
         else:
-            print(f"\nLine {line_num}: Function not found in 'optimized' stats.")
+            if before_data:
+                print(f"\nLine {line_num}: Present only in 'before' stats.")
+            if optimized_data:
+                print(f"\nLine {line_num}: Present only in 'optimized' stats.")
 
     if total_before_time > 0:
         performance_increase_percent = ((total_before_time - total_optimized_time) / total_before_time) * 100
         print(f"\nTotal Performance Increase: {performance_increase_percent:.2f}%")
     else:
         print("\nTotal performance increase: N/A (Before time is 0).")
+
 
