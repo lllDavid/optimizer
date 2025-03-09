@@ -1,5 +1,5 @@
 # Functions to optimize
-from benchmarks.cprofile import profile_function
+from benchmarks.profiler import profile_function
 from benchmarks.time import time_function
 
 # 1

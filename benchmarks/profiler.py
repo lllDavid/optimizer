@@ -1,5 +1,4 @@
-import cProfile
-import pstats
+from line_profiler import LineProfiler
 from os import path, makedirs
 
 def profile_function(func, profile_type='before'):
@@ -11,18 +10,17 @@ def profile_function(func, profile_type='before'):
         if not path.exists(directory):
             makedirs(directory)
 
-        profiler = cProfile.Profile()
-        profiler.enable()
+        profiler = LineProfiler()
+        profiler.add_function(func)
 
-        result = func(*args, **kwargs)
+        result = profiler(func)(*args, **kwargs)
 
-        profiler.disable()
+        filename = path.join(directory, f"{func.__name__}_line_stats.lprof")
 
-        filename = path.join(directory, f"{func.__name__}_stats.prof")
-
-        stats = pstats.Stats(profiler)
-        stats.dump_stats(filename)
+        with open(filename, 'w') as f:
+            profiler.print_stats(stream=f)
 
         print(f"Finished profiling, saved file as '{filename}'.")
+        
         return result
     return wrapper

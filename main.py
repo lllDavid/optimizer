@@ -1,12 +1,5 @@
 from random import randint
-
-from functions.functions import inefficient_duplicates_check
-from functions.functions import inefficient_sorting_repeatedly
-from functions.functions import inefficient_matrix_multiplication
-
-# inefficient_duplicates_check([randint(1, 10) for _ in range(1000)])
-
-# inefficient_sorting_repeatedly(1000)
+from functions.before.functions import inefficient_matrix_multiplication
 
 n = 2 
 min_val = 1

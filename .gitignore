@@ -16,14 +16,11 @@ build/
 # Cython extension directories
 dist/
 
-# Setup.py build artifacts
-*.egg-info/
-
 # Virtualenvs
 venv/
 env/
 ENV/
 .venv/
 
-# CProfile
-*.prof
+# line_profiler
+*.lprof
