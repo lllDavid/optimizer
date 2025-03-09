@@ -1,6 +1,6 @@
 from os import path
 
-def parse_lprof_output(lprof_text):
+def parse_lprof_text(lprof_text):
     parsed_data = {}
 
     lines = lprof_text.splitlines()
@@ -38,13 +38,13 @@ def parse_lprof_output(lprof_text):
 
     return parsed_data
 
-def compare(file: str, directory: str):
+def load_lprof_file(file: str, directory: str):
     file_path = path.join(directory, file)
     if path.exists(file_path):
         with open(file_path, 'r') as f:
             lprof_text = f.read()
 
-        stats_dict = parse_lprof_output(lprof_text)
+        stats_dict = parse_lprof_text(lprof_text)
 
         return stats_dict
     else:
@@ -52,8 +52,15 @@ def compare(file: str, directory: str):
         return None
 
 
-def display_comparison(before_stats, optimized_stats):
+def compare(file_name):
     print("Comparing Function Calls and Cumulative Time:")
+
+    before_stats = load_lprof_file(file_name, "benchmarks/results/before")
+    optimized_stats = load_lprof_file(file_name, "benchmarks/results/optimized")
+
+    if not before_stats or not optimized_stats:
+        print("Error: One or both of the stats files are missing.")
+        return
 
     total_before_time = 0
     total_optimized_time = 0
@@ -88,11 +95,3 @@ def display_comparison(before_stats, optimized_stats):
     else:
         print("\nTotal performance increase: N/A (Before time is 0).")
 
-
-file_name = str(input("Benchmarks to compare:"))
-
-before_stats = compare(file_name, "before")
-optimized_stats = compare(file_name, "optimized")
-
-if before_stats and optimized_stats:
-    display_comparison(before_stats, optimized_stats)

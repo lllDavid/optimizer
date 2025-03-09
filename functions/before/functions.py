@@ -1,4 +1,4 @@
-# Functions to optimize
+# Inefficient functions
 from benchmarks.profiler import profile_function
 from benchmarks.time import time_function
 
