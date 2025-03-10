@@ -1,10 +1,10 @@
-# Inefficient functions
+# Unoptimized functions
 from benchmarks.profiler import profile_function
 from benchmarks.time import time_function
 
 # 1
 @time_function(repetitions=10)
-@profile_function(profile_type="before")
+@profile_function(profile_type="unoptimized")
 def inefficient_duplicates_check(data):
     """
     This function is inefficient because it checks for duplicates by comparing
@@ -19,7 +19,7 @@ def inefficient_duplicates_check(data):
 
 # 2
 @time_function(repetitions=10)
-@profile_function(profile_type="before")
+@profile_function(profile_type="unoptimized")
 def inefficient_matrix_multiplication(A, B):
     """
     Perform matrix multiplication using nested loops.
@@ -27,17 +27,15 @@ def inefficient_matrix_multiplication(A, B):
     """
     n = len(A)  
     C = [[0] * n for _ in range(n)]  
-
     for i in range(n):
         for j in range(n):
             for k in range(n):
                 C[i][j] += A[i][k] * B[k][j]
-    
     return C
 
 # 3
 @time_function(repetitions=10)
-@profile_function(profile_type="before")
+@profile_function(profile_type="unoptimized")
 def inefficient_sorting_repeatedly(n):
     """
     Generate a list of `n` random numbers and sort it repeatedly.

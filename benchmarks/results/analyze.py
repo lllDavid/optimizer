@@ -1,8 +1,8 @@
 from os import path
 
 def analyze():
-    directory = 'benchmarks/results/before'
-    filename = input("Enter filename: ") 
+    directory = 'benchmarks/results/unoptimized'
+    filename = input("Enter filename: ").strip()
     f = path.join(directory, filename)
 
     if not path.exists(f):

@@ -55,49 +55,49 @@ def load_lprof_file(file: str, directory: str):
 def compare(file_name):
     print("Comparing Function Calls and Cumulative Time:")
 
-    before_stats = load_lprof_file(file_name, "benchmarks/results/before")
+    unoptimized_stats = load_lprof_file(file_name, "benchmarks/results/unoptimized")
     optimized_stats = load_lprof_file(file_name, "benchmarks/results/optimized")
 
-    if not before_stats or not optimized_stats:
+    if not unoptimized_stats or not optimized_stats:
         print("Error: One or both of the stats files are missing.")
         return
 
-    total_before_time = 0
+    total_unoptimized_time = 0
     total_optimized_time = 0
 
-    all_line_nums = set(before_stats.keys()).union(optimized_stats.keys())
+    all_line_nums = set(unoptimized_stats.keys()).union(optimized_stats.keys())
 
     for line_num in all_line_nums:
-        before_data = before_stats.get(line_num)
+        unoptimized_data = unoptimized_stats.get(line_num)
         optimized_data = optimized_stats.get(line_num)
 
-        if before_data and optimized_data:
-            before_hits = before_data['hits']
+        if unoptimized_data and optimized_data:
+            unoptimized_hits = unoptimized_data['hits']
             optimized_hits = optimized_data['hits']
-            before_time = before_data['time']
+            unoptimized_time = unoptimized_data['time']
             optimized_time = optimized_data['time']
-            before_percent_time = before_data['percent_time']
+            unoptimized_percent_time = unoptimized_data['percent_time']
             optimized_percent_time = optimized_data['percent_time']
 
-            print(f"\nLine {line_num}: {before_data['line_contents']}")
-            print(f"  Before Hits: {before_hits}, Optimized Hits: {optimized_hits}")
-            print(f"  Before Total Time: {before_time:.6f}s, Optimized Total Time: {optimized_time:.6f}s")
-            print(f"  Before % Time: {before_percent_time:.2f}%, Optimized % Time: {optimized_percent_time:.2f}%")
-            time_change = optimized_time - before_time
+            print(f"\nLine {line_num}: {unoptimized_data['line_contents']}")
+            print(f"  Unoptimized Hits: {unoptimized_hits}, Optimized Hits: {optimized_hits}")
+            print(f"  Unoptimized Total Time: {unoptimized_time:.6f}s, Optimized Total Time: {optimized_time:.6f}s")
+            print(f"  Unoptimized % Time: {unoptimized_percent_time:.2f}%, Optimized % Time: {optimized_percent_time:.2f}%")
+            time_change = optimized_time - unoptimized_time
             print(f"  Time Change: {time_change:.6f}s")
 
-            total_before_time += before_time
+            total_unoptimized_time += unoptimized_time
             total_optimized_time += optimized_time
         else:
-            if before_data:
-                print(f"\nLine {line_num}: Present only in 'before' stats.")
+            if unoptimized_data:
+                print(f"\nLine {line_num}: Present only in 'unoptimized' stats.")
             if optimized_data:
                 print(f"\nLine {line_num}: Present only in 'optimized' stats.")
 
-    if total_before_time > 0:
-        performance_increase_percent = ((total_before_time - total_optimized_time) / total_before_time) * 100
+    if total_unoptimized_time > 0:
+        performance_increase_percent = ((total_unoptimized_time - total_optimized_time) / total_unoptimized_time) * 100
         print(f"\nTotal Performance Increase: {performance_increase_percent:.2f}%")
     else:
-        print("\nTotal performance increase: N/A (Before time is 0).")
+        print("\nTotal performance increase: N/A (Unoptimized time is 0).")
 
 
