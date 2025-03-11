@@ -38,51 +38,55 @@ def profile_function(profile_type="unoptimized"):
             stats_str = stats_stream.getvalue()
 
             result_dict = save_profiling_result(profile_type, func.__name__, stats_str)
+            
             return result, result_dict
 
         return wrapper
     return decorator
 
 def get_mean_profile_times():
-    hits_list = []
-    time_list = []
-    per_hit_list = []
-    percent_time_list = []
+    line_stats = {}
+    line_contents = {}
     
     for result in profiling_results:
         stats_lines = result['stats'].split("\n")
         for line in stats_lines:
             parts = line.split()
-            if len(parts) > 4 and parts[0].isdigit(): 
+            if len(parts) > 5 and parts[0].isdigit():  
                 try:
+                    line_num = int(parts[0])
                     hits = int(parts[1])       
                     time = float(parts[2])    
                     per_hit = float(parts[3])
                     percent_time = float(parts[4])  
+                    line_content = " ".join(parts[5:])
                     
-                    hits_list.append(hits)
-                    time_list.append(time)
-                    per_hit_list.append(per_hit)
-                    percent_time_list.append(percent_time)
-
+                    if line_num not in line_stats:
+                        line_stats[line_num] = {'hits': [], 'time': [], 'per_hit': [], 'percent_time': []}
+                        line_contents[line_num] = line_content
+                    
+                    line_stats[line_num]['hits'].append(hits)
+                    line_stats[line_num]['time'].append(time)
+                    line_stats[line_num]['per_hit'].append(per_hit)
+                    line_stats[line_num]['percent_time'].append(percent_time)
+                
                 except ValueError:
                     pass  
-  
-    mean_hits = mean(hits_list) if hits_list else 0
-    mean_time = mean(time_list) if time_list else 0
-    mean_per_hit = mean(per_hit_list) if per_hit_list else 0
-    mean_percent_time = mean(percent_time_list) if percent_time_list else 0
-
-
-    mean_results = {
-        "Mean Hits": mean_hits,
-        "Mean Time": mean_time,
-        "Mean Per Hit": mean_per_hit,
-        "Mean % Time": mean_percent_time
-    }
     
-    print("Mean Profiling Results:")
-    for key, value in mean_results.items():
-        print(f"{key}: {value:.6f}")
-
+    mean_results = {}
+    for line_num, stats in line_stats.items():
+        mean_results[line_num] = {
+            "Mean Hits": mean(stats['hits']),
+            "Mean Time": mean(stats['time']),
+            "Mean Per Hit": mean(stats['per_hit']),
+            "Mean % Time": mean(stats['percent_time'])
+        }
+    
+    print("Timer unit: 1e-07 s\n")
+    print("Mean Profiling Results Per Line:")
+    print("Line #      Hits         Time  Per Hit   % Time  Line Contents")
+    print("==========================================================================")
+    for line_num, stats in sorted(mean_results.items()):
+        print(f"{line_num:>5} {stats['Mean Hits']:>10.1f} {stats['Mean Time']:>10.1f} {stats['Mean Per Hit']:>10.1f} {stats['Mean % Time']:>10.1f}  {line_contents[line_num]}")
+    
     return mean_results

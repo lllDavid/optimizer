@@ -2,7 +2,7 @@ from os import path
 
 def analyze():
     directory = 'benchmarks/results/unoptimized'
-    filename = input("Enter filename: ").strip()
+    filename = input("Enter filename (eg. inefficient_matrix_multiplication.lprof):").strip()
     f = path.join(directory, filename)
 
     if not path.exists(f):

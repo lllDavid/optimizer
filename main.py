@@ -22,11 +22,16 @@ get_mean_profile_times()
 print("\nAnalysis of 'unoptimized' version:")
 analyze()
 
+'''
 print("\n--- Running 'optimized' version of matrix multiplication ---")
 optimized(matrix_a, matrix_b)
+print("\nProfiling results for 'optimized' version:")
+get_mean_profile_times()
 print("\nAnalysis of 'optimized' version:")
 analyze()
+'''
 
-file_name = input("\nEnter the benchmark file name to compare results: ").strip()
+file_name = input("\nEnter the filename to compare unoptimized vs. optimized: ").strip()
 print(f"\n--- Comparing results using file: {file_name} ---")
 compare(file_name)
+
