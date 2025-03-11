@@ -27,7 +27,7 @@ def analyze():
 
     values_sorted = sorted(values, key=lambda x: x[0], reverse=True)
 
-    print("Results:")
+    print("\nResults:")
     for time_percentage, line_content in values_sorted:
         print(f"Time: {time_percentage:.2f}% -> Line: {line_content}")
 

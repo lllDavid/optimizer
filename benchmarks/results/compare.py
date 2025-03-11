@@ -53,8 +53,6 @@ def load_lprof_file(file: str, directory: str):
 
 
 def compare(file_name):
-    print("Comparing Function Calls and Cumulative Time:")
-
     unoptimized_stats = load_lprof_file(file_name, "benchmarks/results/unoptimized")
     optimized_stats = load_lprof_file(file_name, "benchmarks/results/optimized")
 

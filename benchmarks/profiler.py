@@ -82,7 +82,6 @@ def get_mean_profile_times():
             "Mean % Time": mean(stats['percent_time'])
         }
     
-    print("Timer unit: 1e-07 s\n")
     print("Mean Profiling Results Per Line:")
     print("Line #      Hits         Time  Per Hit   % Time  Line Contents")
     print("==========================================================================")
