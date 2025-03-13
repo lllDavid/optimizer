@@ -96,6 +96,17 @@ if __name__ == "__main__":
 
 def dynamic_cython(func_name, func_code):
     base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../functions/optimized"))
+    
+    if not os.path.exists(base_dir):
+        print(f"Creating base directory {base_dir}.")
+        os.makedirs(base_dir)
+
+    func_dir = os.path.join(base_dir, func_name)
+
+    if not os.path.exists(func_dir):
+        print(f"Creating directory for function {func_name} at {func_dir}.")
+        os.makedirs(func_dir)
+
     func_dir = os.path.join(base_dir, func_name)
     generate_cython_code(func_name, func_code, func_dir)
     compile_cython_file(func_name, func_dir)
