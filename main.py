@@ -16,8 +16,8 @@ def try_import_optimized():
             print("\n Successfully imported optimized function!")
             break 
         except ImportError:
-            print("\n Optimized function not yet in dir. Retrying in 30 seconds...")
-            time.sleep(30)  
+            print("\n Optimized function not yet in dir. Retrying in 15 seconds...")
+            time.sleep(15)  
 
 threading.Thread(target=try_import_optimized, daemon=True).start()
 
