@@ -113,8 +113,13 @@ def dynamic_cython(func_name, func_params, func_code):
     generate_run_file(func_name, func_dir)
 
 def main():
-    file_path = input("Enter the file path (e.g., optimize\\test_function.py): ")
+    file_path = input("Enter the file path (e.g., optimize/test_function.py or optimize\\test_function.py): ")
+    file_path = os.path.normpath(file_path)  
+
     func_name = input("Enter the name of the function you want to cythonize (e.g., test_func): ")
+
+    print(f"Normalized file path: {file_path}")
+    print(f"Function name: {func_name}")
     
     func_code, func_params = extract_function_code(file_path, func_name)
     if func_code is None:
